@@ -74,7 +74,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<form [formGroup]=\"contactForm\" (ngSubmit)=\"addLocation()\">\n  <div class=\"autocomplete\">\n    <label>Select Country</label>\n    <input\n      class=\"form-control\"\n      aria-label=\"country\"\n      id=\"country\"\n      type=\"text\"\n      name=\"country\"\n      placeholder=\"Country\"\n      formControlName=\"country\"\n      #val\n    />\n    <ul\n      *ngIf=\"val.value != '' && !isCountrySelected\"\n      id=\"myInputautocomplete-list\"\n      class=\"autocomplete-items\"\n    >\n      <li\n        *ngFor=\"let country of filteredList\"\n        (click)=\"setCountry(country)\"\n        (keyup.enter)=\"setCountry(country)\"\n      >\n        <strong>{{ country.name.substr(0, val.value.length) }}</strong\n        >{{ country.name.substr(val.value.length) }}\n      </li>\n    </ul>\n  </div>\n  <div>\n    <label for=\"firstname\">Enter a zipcode:</label>\n    <input\n      type=\"text\"\n      id=\"zipcode\"\n      name=\"zipcode\"\n      aria-label=\"zipcode\"\n      formControlName=\"zipcode\"\n      class=\"form-control\"\n      placeholder=\"Zipcode\"\n    />\n  </div>\n  <br />\n  <app-load-btn\n    [isFilled]=\"contactForm.valid\"\n    (ldBtn)=\"addLocation()\"\n  ></app-load-btn>\n</form>\n<br />\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<form [formGroup]=\"contactForm\" (ngSubmit)=\"addLocation()\">\r\n  <div class=\"autocomplete\">\r\n    <label>Select Country</label>\r\n    <input\r\n      class=\"form-control\"\r\n      aria-label=\"country\"\r\n      id=\"country\"\r\n      type=\"text\"\r\n      name=\"country\"\r\n      placeholder=\"Country\"\r\n      formControlName=\"country\"\r\n      #val\r\n      (focusout)=\"resetCountry(val)\"\r\n    />\r\n    <ul\r\n      *ngIf=\"val.value != '' && !isCountrySelected\"\r\n      id=\"myInputautocomplete-list\"\r\n      class=\"autocomplete-items\"\r\n    >\r\n      <li *ngFor=\"let country of filteredList\" (click)=\"setCountry(country)\">\r\n        <strong>{{ country.name.substr(0, val.value.length) }}</strong\r\n        >{{ country.name.substr(val.value.length) }}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n  <div>\r\n    <label for=\"firstname\">Enter a zipcode:</label>\r\n    <input\r\n      type=\"number\"\r\n      id=\"zipcode\"\r\n      name=\"zipcode\"\r\n      aria-label=\"zipcode\"\r\n      formControlName=\"zipcode\"\r\n      class=\"form-control\"\r\n      placeholder=\"Zipcode\"\r\n    />\r\n  </div>\r\n  <br />\r\n  <app-load-btn\r\n    [isFilled]=\"contactForm.valid\"\r\n    (ldBtn)=\"addLocation()\"\r\n  ></app-load-btn>\r\n</form>\r\n<br />\r\n");
 
 /***/ }),
 
@@ -781,6 +781,7 @@ var ZipcodeEntryComponent = /** @class */ (function () {
         this.weatherService = weatherService;
         this.http = http;
         this.isCountrySelected = false;
+        // Reactive forms fields initialization
         this.contactForm = new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormGroup"]({
             zipcode: new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormControl"]("", _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required),
             country: new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormControl"]("", _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required),
@@ -805,7 +806,7 @@ var ZipcodeEntryComponent = /** @class */ (function () {
     ZipcodeEntryComponent.prototype.addLocation = function () {
         if (this.contactForm.valid && this.isCountrySelected) {
             // updating location in app memory and local storage
-            this.weatherService.addCurrentConditions(this.contactForm.value.zipcode, this.contactForm.value.id);
+            this.weatherService.addCurrentConditions(this.contactForm.value.zipcode.toString(), this.contactForm.value.id);
             this.contactForm.reset();
         }
     };
@@ -815,6 +816,23 @@ var ZipcodeEntryComponent = /** @class */ (function () {
             id: val.code.toLowerCase(),
         });
         this.isCountrySelected = true;
+    };
+    // On focusout get country is spelling good otherwise clear field
+    ZipcodeEntryComponent.prototype.resetCountry = function (val) {
+        var _this = this;
+        if (val.value &&
+            this.filteredList[0].name.toLowerCase() === val.value.toLowerCase()) {
+            this.contactForm.patchValue({
+                country: this.filteredList[0].name,
+                id: this.filteredList[0].code.toLowerCase(),
+            });
+            this.isCountrySelected = true;
+        }
+        setTimeout(function () {
+            if (!_this.isCountrySelected)
+                _this.contactForm.controls.country.reset();
+            _this.filteredList = [];
+        }, 200);
     };
     ZipcodeEntryComponent.ctorParameters = function () { return [
         { type: app_weather_service__WEBPACK_IMPORTED_MODULE_3__["WeatherService"] },
