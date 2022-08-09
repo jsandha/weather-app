@@ -4,6 +4,8 @@ import { Component, HostListener } from "@angular/core";
 import { WeatherService } from "app/weather.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { CountryList } from "app/modals/countryList";
+import { Subscription } from "rxjs";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-zipcode-entry",
@@ -14,11 +16,37 @@ export class ZipcodeEntryComponent {
   countryList: CountryList[];
   filteredList: CountryList[];
   isCountrySelected = false;
-
+  btnArray = [
+    ["Add Location", "btn-primary"],
+    ["Loading...", "btn-primary"],
+    ["Done", "btn-success"],
+  ];
+  btnHtmlContent;
+  btnClicked = false;
+  subscription = new Subscription();
   constructor(
     private weatherService: WeatherService,
-    private http: HttpClient
+    private http: HttpClient,
+    private sanitizer: DomSanitizer
   ) {
+    this.btnHtmlContent = [
+      this.sanitizer.bypassSecurityTrustHtml(this.btnArray[0][0]),
+      this.btnArray[0][1],
+    ];
+    this.subscription = this.weatherService.buttonUpdate$.subscribe((val) => {
+      // button transition delay from status done to Add Location
+      this.btnHtmlContent = [
+        this.sanitizer.bypassSecurityTrustHtml(this.btnArray[2][0]),
+        this.btnArray[2][1],
+      ]; // for resetting to add location
+      if (val)
+        setTimeout(() => {
+          this.btnHtmlContent = [
+            this.sanitizer.bypassSecurityTrustHtml(this.btnArray[0][0]),
+            this.btnArray[0][1],
+          ]; // for resetting to add location
+        }, 500);
+    });
     this.http
       .get("assets/country.list.json")
       .pipe(take(1))
@@ -26,7 +54,7 @@ export class ZipcodeEntryComponent {
         this.countryList = x;
       });
   }
-
+  // with every keyup event filter the country list to show
   @HostListener("keyup", ["$event.target"])
   filterList(val) {
     if (val.id == "country") {
@@ -56,9 +84,10 @@ export class ZipcodeEntryComponent {
       );
       this.contactForm.reset();
       this.weatherService.refreshLocations();
+      this.btnHtmlContent = this.btnArray[1];
     }
   }
-
+  // click on country from list set its value.
   setCountry(val) {
     this.contactForm.patchValue({
       country: val.name,
@@ -83,5 +112,8 @@ export class ZipcodeEntryComponent {
       if (!this.isCountrySelected) this.contactForm.controls.country.reset();
       this.filteredList = [];
     }, 200);
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

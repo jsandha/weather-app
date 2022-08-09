@@ -37,6 +37,7 @@
   </div>
   <br />
   <app-load-btn
+    [btnHtml]="btnHtmlContent"
     [isFilled]="contactForm.valid"
     (ldBtn)="addLocation()"
   ></app-load-btn>

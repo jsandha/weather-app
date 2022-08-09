@@ -1,8 +1,7 @@
 <button
   class="btn"
-  [class]="btnClicked ? 'btn-success' : 'btn-primary'"
+  [innerHtml]="btnHtml[0]"
+  [class]="btnHtml[1]"
   (click)="buttonClicked()"
-  [disabled]="btnClicked"
->
-  {{ btnClicked ? btnTxt : "Add location" }}
-</button>
+  [disabled]="btnHtml[1] == 'btn-success'"
+></button>
