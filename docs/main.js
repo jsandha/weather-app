@@ -22,7 +22,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div>\n  <div\n    *ngFor=\"let location of currentConditions; trackBy: trackByMethod\"\n    class=\"well flex\"\n    (click)=\"showForecast(location.zip)\"\n  >\n    <div>\n      <h3>{{ location.data.name }} ({{ location.zip }})</h3>\n      <h4>Current conditions: {{ location.data.weather[0].main }}</h4>\n      <h4>Temperatures today:</h4>\n      <p>\n        Current {{ location.data.main.temp | number: \".0-0\" }} - Max\n        {{ location.data.main.temp_max | number: \".0-0\" }} - Min\n        {{ location.data.main.temp_min | number: \".0-0\" }}\n      </p>\n      <p>\n        <a [routerLink]=\"['/forecast', location.zip]\"\n          >Show 5-day forecast for {{ location.data.name }}</a\n        >\n      </p>\n    </div>\n    <div>\n      <span class=\"close\" (click)=\"weatherService.removeLocation(location.zip)\"\n        >&times;</span\n      >\n      <img\n        alt=\"\"\n        [src]=\"weatherService.getWeatherIcon(location.data.weather[0].id)\"\n      />\n    </div>\n  </div>\n</div>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div>\r\n  <div\r\n    *ngFor=\"let location of currentConditions; trackBy: trackByMethod\"\r\n    class=\"well flex\"\r\n    (click)=\"showForecast(location.zip)\"\r\n  >\r\n    <div>\r\n      <h3>{{ location.data.name }} ({{ location.zip }})</h3>\r\n      <h4>Current conditions: {{ location.data.weather[0].main }}</h4>\r\n      <h4>Temperatures today:</h4>\r\n      <p>\r\n        Current {{ location.data.main.temp | number: \".0-0\" }} - Max\r\n        {{ location.data.main.temp_max | number: \".0-0\" }} - Min\r\n        {{ location.data.main.temp_min | number: \".0-0\" }}\r\n      </p>\r\n      <p>\r\n        <a [routerLink]=\"['/forecast', location.zip]\"\r\n          >Show 5-day forecast for {{ location.data.name }}</a\r\n        >\r\n      </p>\r\n    </div>\r\n    <div>\r\n      <span\r\n        class=\"close\"\r\n        (click)=\"\r\n          weatherService.removeLocation(location.zip);\r\n          weatherService.refreshLocations()\r\n        \"\r\n        >&times;</span\r\n      >\r\n      <img\r\n        alt=\"\"\r\n        [src]=\"weatherService.getWeatherIcon(location.data.weather[0].id)\"\r\n      />\r\n    </div>\r\n  </div>\r\n</div>\r\n");
 
 /***/ }),
 
@@ -48,7 +48,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<button\n  class=\"btn\"\n  [class]=\"btnClicked ? 'btn-success' : 'btn-primary'\"\n  (click)=\"buttonClicked()\"\n  [disabled]=\"btnClicked\"\n>\n  {{ btnClicked ? btnTxt : \"Add location\" }}\n</button>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<button\r\n  class=\"btn\"\r\n  [innerHtml]=\"btnHtml[0]\"\r\n  [class]=\"btnHtml[1]\"\r\n  (click)=\"buttonClicked()\"\r\n  [disabled]=\"btnHtml[1] == 'btn-success'\"\r\n></button>\r\n");
 
 /***/ }),
 
@@ -74,7 +74,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<form [formGroup]=\"contactForm\" (ngSubmit)=\"addLocation()\">\r\n  <div class=\"autocomplete\">\r\n    <label>Select Country</label>\r\n    <input\r\n      class=\"form-control\"\r\n      aria-label=\"country\"\r\n      id=\"country\"\r\n      type=\"text\"\r\n      name=\"country\"\r\n      placeholder=\"Country\"\r\n      formControlName=\"country\"\r\n      #val\r\n      (focusout)=\"resetCountry(val)\"\r\n    />\r\n    <ul\r\n      *ngIf=\"val.value != '' && !isCountrySelected\"\r\n      id=\"myInputautocomplete-list\"\r\n      class=\"autocomplete-items\"\r\n    >\r\n      <li *ngFor=\"let country of filteredList\" (click)=\"setCountry(country)\">\r\n        <strong>{{ country.name.substr(0, val.value.length) }}</strong\r\n        >{{ country.name.substr(val.value.length) }}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n  <div>\r\n    <label for=\"firstname\">Enter a zipcode:</label>\r\n    <input\r\n      type=\"number\"\r\n      id=\"zipcode\"\r\n      name=\"zipcode\"\r\n      aria-label=\"zipcode\"\r\n      formControlName=\"zipcode\"\r\n      class=\"form-control\"\r\n      placeholder=\"Zipcode\"\r\n    />\r\n  </div>\r\n  <br />\r\n  <app-load-btn\r\n    [isFilled]=\"contactForm.valid\"\r\n    (ldBtn)=\"addLocation()\"\r\n  ></app-load-btn>\r\n</form>\r\n<br />\r\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<form [formGroup]=\"contactForm\" (ngSubmit)=\"addLocation()\">\r\n  <div class=\"autocomplete\">\r\n    <label>Select Country</label>\r\n    <input\r\n      class=\"form-control\"\r\n      aria-label=\"country\"\r\n      id=\"country\"\r\n      type=\"text\"\r\n      name=\"country\"\r\n      placeholder=\"Country\"\r\n      formControlName=\"country\"\r\n      #val\r\n      (focusout)=\"resetCountry(val)\"\r\n    />\r\n    <ul\r\n      *ngIf=\"val.value != '' && !isCountrySelected\"\r\n      id=\"myInputautocomplete-list\"\r\n      class=\"autocomplete-items\"\r\n    >\r\n      <li *ngFor=\"let country of filteredList\" (click)=\"setCountry(country)\">\r\n        <strong>{{ country.name.substr(0, val.value.length) }}</strong\r\n        >{{ country.name.substr(val.value.length) }}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n  <div>\r\n    <label for=\"firstname\">Enter a zipcode:</label>\r\n    <input\r\n      type=\"number\"\r\n      id=\"zipcode\"\r\n      name=\"zipcode\"\r\n      aria-label=\"zipcode\"\r\n      formControlName=\"zipcode\"\r\n      class=\"form-control\"\r\n      placeholder=\"Zipcode\"\r\n    />\r\n  </div>\r\n  <br />\r\n  <app-load-btn\r\n    [btnHtml]=\"btnHtmlContent\"\r\n    [isFilled]=\"contactForm.valid\"\r\n    (ldBtn)=\"addLocation()\"\r\n  ></app-load-btn>\r\n</form>\r\n<br />\r\n");
 
 /***/ }),
 
@@ -444,7 +444,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoadBtnComponent", function() { return LoadBtnComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm5/core.js");
-/* harmony import */ var app_weather_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! app/weather.service */ "./src/app/weather.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -458,37 +457,23 @@ var __importDefault = (undefined && undefined.__importDefault) || function (mod)
   return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 
-
 var LoadBtnComponent = /** @class */ (function () {
-    function LoadBtnComponent(service) {
-        var _this = this;
-        this.service = service;
+    function LoadBtnComponent() {
         this.ldBtn = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-        this.btnClicked = false;
-        this.btnTxt = "Loading...";
-        this.service.buttonUpdate$.subscribe(function (val) {
-            // button transition delay from status done to Add Location
-            _this.btnTxt = "Done";
-            if (val)
-                setTimeout(function () {
-                    _this.btnClicked = false;
-                    _this.btnTxt = "Loading...";
-                }, 500);
-        });
     }
     LoadBtnComponent.prototype.buttonClicked = function () {
         if (this.isFilled) {
-            this.btnClicked = true;
             this.ldBtn.emit();
         }
     };
-    LoadBtnComponent.ctorParameters = function () { return [
-        { type: app_weather_service__WEBPACK_IMPORTED_MODULE_1__["WeatherService"] }
-    ]; };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
         __metadata("design:type", Boolean)
     ], LoadBtnComponent.prototype, "isFilled", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Array)
+    ], LoadBtnComponent.prototype, "btnHtml", void 0);
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"])(),
         __metadata("design:type", Object)
@@ -498,8 +483,7 @@ var LoadBtnComponent = /** @class */ (function () {
             selector: "app-load-btn",
             template: __importDefault(__webpack_require__(/*! raw-loader!./load-btn.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/load-btn/load-btn.component.html")).default,
             styles: [__importDefault(__webpack_require__(/*! ./load-btn.component.css */ "./src/app/load-btn/load-btn.component.css")).default]
-        }),
-        __metadata("design:paramtypes", [app_weather_service__WEBPACK_IMPORTED_MODULE_1__["WeatherService"]])
+        })
     ], LoadBtnComponent);
     return LoadBtnComponent;
 }());
@@ -636,14 +620,12 @@ var WeatherService = /** @class */ (function () {
             var index = _this.currentConditions.findIndex(function (el) { return el.zip == zipcode; });
             if (index != -1) {
                 _this.currentConditions[index] = { zip: zipcode, data: data }; // update current condition
-                _this.update(true);
             }
             else {
                 _this.currentConditions.push({ zip: zipcode, data: data });
                 _this.addLocation(zipcode, id);
-                _this.update(true);
             }
-        }, function (err) { return _this.update(true); });
+        });
     };
     WeatherService.prototype.removeCurrentConditions = function (zipcode) {
         for (var i in this.currentConditions) {
@@ -678,6 +660,7 @@ var WeatherService = /** @class */ (function () {
         var index = this.locations.findIndex(function (el) { return el.zip == zipcode; });
         if (index == -1) {
             // update only if zipcode not present an
+            this.update(true);
             this.locations.push({ zip: zipcode, id: id });
             this.updateLocalStorage(this.locations);
         }
@@ -758,6 +741,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm5/core.js");
 /* harmony import */ var app_weather_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! app/weather.service */ "./src/app/weather.service.ts");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm5/forms.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/__ivy_ngcc__/fesm5/platform-browser.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -775,17 +760,45 @@ var __importDefault = (undefined && undefined.__importDefault) || function (mod)
 
 
 
+
+
 var ZipcodeEntryComponent = /** @class */ (function () {
-    function ZipcodeEntryComponent(weatherService, http) {
+    function ZipcodeEntryComponent(weatherService, http, sanitizer) {
         var _this = this;
         this.weatherService = weatherService;
         this.http = http;
+        this.sanitizer = sanitizer;
         this.isCountrySelected = false;
+        this.btnArray = [
+            ["Add Location", "btn-primary"],
+            ["Loading...", "btn-primary"],
+            ["Done", "btn-success"],
+        ];
+        this.btnClicked = false;
+        this.subscription = new rxjs__WEBPACK_IMPORTED_MODULE_5__["Subscription"]();
         // Reactive forms fields initialization
         this.contactForm = new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormGroup"]({
             zipcode: new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormControl"]("", _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required),
             country: new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormControl"]("", _angular_forms__WEBPACK_IMPORTED_MODULE_4__["Validators"].required),
             id: new _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormControl"](),
+        });
+        this.btnHtmlContent = [
+            this.sanitizer.bypassSecurityTrustHtml(this.btnArray[0][0]),
+            this.btnArray[0][1],
+        ];
+        this.subscription = this.weatherService.buttonUpdate$.subscribe(function (val) {
+            // button transition delay from status done to Add Location
+            _this.btnHtmlContent = [
+                _this.sanitizer.bypassSecurityTrustHtml(_this.btnArray[2][0]),
+                _this.btnArray[2][1],
+            ]; // for resetting to add location
+            if (val)
+                setTimeout(function () {
+                    _this.btnHtmlContent = [
+                        _this.sanitizer.bypassSecurityTrustHtml(_this.btnArray[0][0]),
+                        _this.btnArray[0][1],
+                    ]; // for resetting to add location
+                }, 500);
         });
         this.http
             .get("assets/country.list.json")
@@ -794,6 +807,7 @@ var ZipcodeEntryComponent = /** @class */ (function () {
             _this.countryList = x;
         });
     }
+    // with every keyup event filter the country list to show
     ZipcodeEntryComponent.prototype.filterList = function (val) {
         if (val.id == "country") {
             this.isCountrySelected = false;
@@ -808,8 +822,11 @@ var ZipcodeEntryComponent = /** @class */ (function () {
             // updating location in app memory and local storage
             this.weatherService.addCurrentConditions(this.contactForm.value.zipcode.toString(), this.contactForm.value.id);
             this.contactForm.reset();
+            this.weatherService.refreshLocations();
+            this.btnHtmlContent = this.btnArray[1];
         }
     };
+    // click on country from list set its value.
     ZipcodeEntryComponent.prototype.setCountry = function (val) {
         this.contactForm.patchValue({
             country: val.name,
@@ -834,9 +851,13 @@ var ZipcodeEntryComponent = /** @class */ (function () {
             _this.filteredList = [];
         }, 200);
     };
+    ZipcodeEntryComponent.prototype.ngOnDestroy = function () {
+        this.subscription.unsubscribe();
+    };
     ZipcodeEntryComponent.ctorParameters = function () { return [
         { type: app_weather_service__WEBPACK_IMPORTED_MODULE_3__["WeatherService"] },
-        { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }
+        { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] },
+        { type: _angular_platform_browser__WEBPACK_IMPORTED_MODULE_6__["DomSanitizer"] }
     ]; };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["HostListener"])("keyup", ["$event.target"]),
@@ -851,7 +872,8 @@ var ZipcodeEntryComponent = /** @class */ (function () {
             styles: [__importDefault(__webpack_require__(/*! ./zipcode-entry.component.css */ "./src/app/zipcode-entry/zipcode-entry.component.css")).default]
         }),
         __metadata("design:paramtypes", [app_weather_service__WEBPACK_IMPORTED_MODULE_3__["WeatherService"],
-            _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]])
+            _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"],
+            _angular_platform_browser__WEBPACK_IMPORTED_MODULE_6__["DomSanitizer"]])
     ], ZipcodeEntryComponent);
     return ZipcodeEntryComponent;
 }());
