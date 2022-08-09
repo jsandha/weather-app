@@ -20,7 +20,12 @@
       </p>
     </div>
     <div>
-      <span class="close" (click)="weatherService.removeLocation(location.zip)"
+      <span
+        class="close"
+        (click)="
+          weatherService.removeLocation(location.zip);
+          weatherService.refreshLocations()
+        "
         >&times;</span
       >
       <img

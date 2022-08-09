@@ -55,6 +55,7 @@ export class ZipcodeEntryComponent {
         this.contactForm.value.id
       );
       this.contactForm.reset();
+      this.weatherService.refreshLocations();
     }
   }
 
