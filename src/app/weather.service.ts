@@ -27,15 +27,18 @@ export class WeatherService {
 
   addCurrentConditions(zipcode: string, id: string) {
     // Here we make a request to get the current conditions data from the API. Note the use of backtick and an expression to insert the zipcode
-    this.getCurrentCondition(zipcode, id).subscribe((data) => {
-      let index = this.currentConditions.findIndex((el) => el.zip == zipcode);
-      if (index != -1) {
-        this.currentConditions[index] = { zip: zipcode, data: data }; // update current condition
-      } else {
-        this.currentConditions.push({ zip: zipcode, data: data });
-        this.addLocation(zipcode, id);
-      }
-    });
+    this.getCurrentCondition(zipcode, id).subscribe(
+      (data) => {
+        let index = this.currentConditions.findIndex((el) => el.zip == zipcode);
+        if (index != -1) {
+          this.currentConditions[index] = { zip: zipcode, data: data }; // update current condition
+        } else {
+          this.currentConditions.push({ zip: zipcode, data: data });
+          this.addLocation(zipcode, id);
+        }
+      },
+      (err) => this.update(false)
+    );
   }
 
   removeCurrentConditions(zipcode: string) {

@@ -35,17 +35,23 @@ export class ZipcodeEntryComponent {
     ];
     this.subscription = this.weatherService.buttonUpdate$.subscribe((val) => {
       // button transition delay from status done to Add Location
-      this.btnHtmlContent = [
-        this.sanitizer.bypassSecurityTrustHtml(this.btnArray[2][0]),
-        this.btnArray[2][1],
-      ]; // for resetting to add location
-      if (val)
+
+      if (val) {
+        this.btnHtmlContent = [
+          this.sanitizer.bypassSecurityTrustHtml(this.btnArray[2][0]),
+          this.btnArray[2][1],
+        ]; // for resetting to add location
         setTimeout(() => {
           this.btnHtmlContent = [
             this.sanitizer.bypassSecurityTrustHtml(this.btnArray[0][0]),
             this.btnArray[0][1],
           ]; // for resetting to add location
         }, 500);
+      } else
+        this.btnHtmlContent = [
+          this.sanitizer.bypassSecurityTrustHtml(this.btnArray[0][0]),
+          this.btnArray[0][1],
+        ];
     });
     this.http
       .get("assets/country.list.json")
@@ -79,7 +85,7 @@ export class ZipcodeEntryComponent {
     if (this.contactForm.valid && this.isCountrySelected) {
       // updating location in app memory and local storage
       this.weatherService.addCurrentConditions(
-        this.contactForm.value.zipcode.toString(),
+        this.contactForm.value.zipcode,
         this.contactForm.value.id
       );
       this.contactForm.reset();
