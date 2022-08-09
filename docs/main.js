@@ -74,7 +74,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<form [formGroup]=\"contactForm\" (ngSubmit)=\"addLocation()\">\r\n  <div class=\"autocomplete\">\r\n    <label>Select Country</label>\r\n    <input\r\n      class=\"form-control\"\r\n      aria-label=\"country\"\r\n      id=\"country\"\r\n      type=\"text\"\r\n      name=\"country\"\r\n      placeholder=\"Country\"\r\n      formControlName=\"country\"\r\n      #val\r\n      (focusout)=\"resetCountry(val)\"\r\n    />\r\n    <ul\r\n      *ngIf=\"val.value != '' && !isCountrySelected\"\r\n      id=\"myInputautocomplete-list\"\r\n      class=\"autocomplete-items\"\r\n    >\r\n      <li *ngFor=\"let country of filteredList\" (click)=\"setCountry(country)\">\r\n        <strong>{{ country.name.substr(0, val.value.length) }}</strong\r\n        >{{ country.name.substr(val.value.length) }}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n  <div>\r\n    <label for=\"firstname\">Enter a zipcode:</label>\r\n    <input\r\n      type=\"number\"\r\n      id=\"zipcode\"\r\n      name=\"zipcode\"\r\n      aria-label=\"zipcode\"\r\n      formControlName=\"zipcode\"\r\n      class=\"form-control\"\r\n      placeholder=\"Zipcode\"\r\n    />\r\n  </div>\r\n  <br />\r\n  <app-load-btn\r\n    [btnHtml]=\"btnHtmlContent\"\r\n    [isFilled]=\"contactForm.valid\"\r\n    (ldBtn)=\"addLocation()\"\r\n  ></app-load-btn>\r\n</form>\r\n<br />\r\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<form [formGroup]=\"contactForm\" (ngSubmit)=\"addLocation()\">\r\n  <div class=\"autocomplete\">\r\n    <label>Select Country</label>\r\n    <input\r\n      class=\"form-control\"\r\n      aria-label=\"country\"\r\n      id=\"country\"\r\n      type=\"text\"\r\n      name=\"country\"\r\n      placeholder=\"Country\"\r\n      formControlName=\"country\"\r\n      #val\r\n      (focusout)=\"resetCountry(val)\"\r\n    />\r\n    <ul\r\n      *ngIf=\"val.value != '' && !isCountrySelected\"\r\n      id=\"myInputautocomplete-list\"\r\n      class=\"autocomplete-items\"\r\n    >\r\n      <li *ngFor=\"let country of filteredList\" (click)=\"setCountry(country)\">\r\n        <strong>{{ country.name.substr(0, val.value.length) }}</strong\r\n        >{{ country.name.substr(val.value.length) }}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n  <div>\r\n    <label for=\"firstname\">Enter a zipcode:</label>\r\n    <input\r\n      type=\"text\"\r\n      id=\"zipcode\"\r\n      name=\"zipcode\"\r\n      aria-label=\"zipcode\"\r\n      formControlName=\"zipcode\"\r\n      class=\"form-control\"\r\n      placeholder=\"Zipcode\"\r\n    />\r\n  </div>\r\n  <br />\r\n  <app-load-btn\r\n    [btnHtml]=\"btnHtmlContent\"\r\n    [isFilled]=\"contactForm.valid\"\r\n    (ldBtn)=\"addLocation()\"\r\n  ></app-load-btn>\r\n</form>\r\n<br />\r\n");
 
 /***/ }),
 
@@ -625,7 +625,7 @@ var WeatherService = /** @class */ (function () {
                 _this.currentConditions.push({ zip: zipcode, data: data });
                 _this.addLocation(zipcode, id);
             }
-        });
+        }, function (err) { return _this.update(false); });
     };
     WeatherService.prototype.removeCurrentConditions = function (zipcode) {
         for (var i in this.currentConditions) {
@@ -788,17 +788,23 @@ var ZipcodeEntryComponent = /** @class */ (function () {
         ];
         this.subscription = this.weatherService.buttonUpdate$.subscribe(function (val) {
             // button transition delay from status done to Add Location
-            _this.btnHtmlContent = [
-                _this.sanitizer.bypassSecurityTrustHtml(_this.btnArray[2][0]),
-                _this.btnArray[2][1],
-            ]; // for resetting to add location
-            if (val)
+            if (val) {
+                _this.btnHtmlContent = [
+                    _this.sanitizer.bypassSecurityTrustHtml(_this.btnArray[2][0]),
+                    _this.btnArray[2][1],
+                ]; // for resetting to add location
                 setTimeout(function () {
                     _this.btnHtmlContent = [
                         _this.sanitizer.bypassSecurityTrustHtml(_this.btnArray[0][0]),
                         _this.btnArray[0][1],
                     ]; // for resetting to add location
                 }, 500);
+            }
+            else
+                _this.btnHtmlContent = [
+                    _this.sanitizer.bypassSecurityTrustHtml(_this.btnArray[0][0]),
+                    _this.btnArray[0][1],
+                ];
         });
         this.http
             .get("assets/country.list.json")
@@ -820,7 +826,7 @@ var ZipcodeEntryComponent = /** @class */ (function () {
     ZipcodeEntryComponent.prototype.addLocation = function () {
         if (this.contactForm.valid && this.isCountrySelected) {
             // updating location in app memory and local storage
-            this.weatherService.addCurrentConditions(this.contactForm.value.zipcode.toString(), this.contactForm.value.id);
+            this.weatherService.addCurrentConditions(this.contactForm.value.zipcode, this.contactForm.value.id);
             this.contactForm.reset();
             this.weatherService.refreshLocations();
             this.btnHtmlContent = this.btnArray[1];
